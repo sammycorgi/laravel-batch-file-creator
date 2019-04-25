@@ -1,6 +1,6 @@
 <?php
 
-namespace Sammycorgi\LaravelBatchFileCreator\Commands;
+namespace LaravelBatchFileCreator\Commands;
 
 class CreateNpmRunWatchBatchFile extends BaseBatchWriter
 {
@@ -19,10 +19,5 @@ class CreateNpmRunWatchBatchFile extends BaseBatchWriter
     public function getCommandName(): string
     {
         return "run-watch";
-    }
-
-    public function getCustomOptions(): ?string
-    {
-        return null;
     }
 }

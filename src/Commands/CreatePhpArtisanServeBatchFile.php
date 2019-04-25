@@ -1,9 +1,13 @@
 <?php
 
-namespace Sammycorgi\LaravelBatchFileCreator\Commands;
+namespace LaravelBatchFileCreator\Commands;
 
-class CreatePhpArtisanServeBatchFile extends BasePhpBatchWriter
+use LaravelBatchFileCreator\Commands\Traits\GetsPhpExecutableInformation;
+
+class CreatePhpArtisanServeBatchFile extends BaseBatchWriter
 {
+    use GetsPhpExecutableInformation;
+
     /**
      * The console command description.
      *
@@ -13,7 +17,7 @@ class CreatePhpArtisanServeBatchFile extends BasePhpBatchWriter
 
     public function getContents(): string
     {
-        return "cd " . base_path() . PHP_EOL . "{$this->getUserDefinedExecutablePath()} artisan serve {$this->getHostnameString()} {$this->getPortString()}";
+        return "cd " . base_path() . PHP_EOL . $this->getPhpExecutablePath() . " artisan serve {$this->appendContents()}";
     }
 
     protected function getPortString()
@@ -28,7 +32,7 @@ class CreatePhpArtisanServeBatchFile extends BasePhpBatchWriter
 
     protected function getHostname() : ?string
     {
-        return $this->option('hostname');
+        return $this->option('host');
     }
 
     protected function getPort() : ?string
@@ -39,10 +43,5 @@ class CreatePhpArtisanServeBatchFile extends BasePhpBatchWriter
     public function getCommandName(): string
     {
         return "serve-local-dev-server";
-    }
-
-    public function getCustomOptions() : ?string
-    {
-        return "{--hostname=localhost} {--port=8000} " . $this->getPhpExecutableLocationSignatureArgument();
     }
 }

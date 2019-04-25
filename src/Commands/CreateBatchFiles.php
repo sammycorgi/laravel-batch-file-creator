@@ -1,6 +1,6 @@
 <?php
 
-namespace Sammycorgi\LaravelBatchFileCreator\Commands;
+namespace LaravelBatchFileCreator\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,7 +23,7 @@ class CreateBatchFiles extends Command
 
     protected $phpExecutableLocation;
 
-    protected $commands;
+    protected $commands = [];
 
     protected $commandInstances = [];
 
@@ -34,7 +34,7 @@ class CreateBatchFiles extends Command
      */
     public function handle()
     {
-        $this->commands = config('batch.all');
+        $this->commands = config('batch.to_write');
 
         $this->populateCommandInstancesArray();
 
@@ -49,12 +49,7 @@ class CreateBatchFiles extends Command
     }
 
     private function convertToQuestionString(BaseBatchWriter $command, InputOption $option) {
-        return $command->getExecutableName() . ' is asking: what is the value of the ' . $option->getName() . '? (leave blank for ' . $option->getDefault() . ')';
-    }
-
-    private function convertToPhpPathLocationQuestion(BasePhpBatchWriter $command)
-    {
-        return 'What is the location of the php executable? Leave blank for ' . $command->getDefaultPhpPath();
+        return $command->getExecutableName() . ' is asking: what is the value of ' . $option->getName() . '? (leave blank for ' . $option->getDefault() . ')';
     }
 
     private function createBatchFile(BaseBatchWriter $command) {
@@ -66,13 +61,8 @@ class CreateBatchFiles extends Command
             $answers = [];
 
             foreach($options as $option) {
-                if($command instanceof BasePhpBatchWriter) {
-                    if($option->getName() === $command->getPhpPathArgumentName()) {
-                        $answers['--' . $option->getName()] = $this->phpExecutableLocation;
-                    } else {
-                        $answer = $this->ask($this->convertToQuestionString($command, $option));
-                        $answers['--' . $option->getName()] = $this->getDefaultIfBlank($answer, $option->getDefault());
-                    }
+                if($option->getName() === config('batch.php.path_argument_name')) {
+                    $answers['--' . $option->getName()] = $this->phpExecutableLocation;
                 } else {
                     $answer = $this->ask($this->convertToQuestionString($command, $option));
                     $answers['--' . $option->getName()] = $this->getDefaultIfBlank($answer, $option->getDefault());
@@ -99,12 +89,12 @@ class CreateBatchFiles extends Command
         $asked = false;
 
         foreach($this->commandInstances as $command) {
-            if($command instanceof BasePhpBatchWriter && !$asked) {
-                $phpExecutableLocation = $this->ask($this->convertToPhpPathLocationQuestion($command));
+            foreach($command->getDefinition()->getOptions() as $option) {
+                if($option->getName() === config('batch.php.path_argument_name')) {
+                    $this->phpExecutableLocation = $this->getDefaultIfBlank($this->ask('What is the location of the php executable? Leave blank for ' . config('batch.php.exe_path')), config('batch.php.exe_path'));
 
-                $this->phpExecutableLocation =  $this->getDefaultIfBlank($phpExecutableLocation, $command->getDefaultPhpPath());
-
-                $asked = true;
+                    break 2;
+                }
             }
         }
     }

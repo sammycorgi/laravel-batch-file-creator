@@ -1,6 +1,7 @@
 <?php
 
-namespace Sammycorgi\LaravelBatchFileCreator\Commands;
+namespace LaravelBatchFileCreator\Commands;
+
 
 class CreateOpenTerminalToProjectPathBatchFile extends BaseBatchWriter
 {
@@ -19,10 +20,5 @@ class CreateOpenTerminalToProjectPathBatchFile extends BaseBatchWriter
     public function getCommandName(): string
     {
         return "open-terminal";
-    }
-
-    public function getCustomOptions(): ?string
-    {
-        return null;
     }
 }

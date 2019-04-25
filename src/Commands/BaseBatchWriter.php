@@ -1,11 +1,12 @@
 <?php
 
 
-namespace Sammycorgi\LaravelBatchFileCreator\Commands;
+namespace LaravelBatchFileCreator\Commands;
 
 
 use Illuminate\Console\Command;
-use Sammycorgi\LaravelBatchFileCreator\Contracts\ICreatesBatchFiles;
+use LaravelBatchFileCreator\Commands\Options\Definitions\IHasDefinitions;
+use LaravelBatchFileCreator\Contracts\ICreatesBatchFiles;
 
 abstract class BaseBatchWriter extends Command implements ICreatesBatchFiles
 {
@@ -16,14 +17,14 @@ abstract class BaseBatchWriter extends Command implements ICreatesBatchFiles
      */
     public function handle() : void
     {
-        file_put_contents(base_path($this->getFolderName() . DIRECTORY_SEPARATOR . $this->getFileName()), $this->getContents());
+        file_put_contents($this->getFolderPath() . DIRECTORY_SEPARATOR . $this->getFileName(), $this->getContents());
 
         $this->info($this->getInfoMessage());
     }
 
     public function getFileName() : string
     {
-        return $this->getCommandName() . ".bat";
+        return $this->getCommandName() . "." . config('batch.file_extension');
     }
 
     public function getInfoMessage() : string
@@ -31,14 +32,9 @@ abstract class BaseBatchWriter extends Command implements ICreatesBatchFiles
         return $this->getFileName() . " batch file created successfully!";
     }
 
-    public function getFolderName() : string
-    {
-        return "batch";
-    }
-
     public function getFolderPath(): string
     {
-        $path = base_path($this->getFolderName());
+        $path = config('batch.folder_path');
 
         if(!file_exists($path)) {
             mkdir($path, 0777, true);
@@ -54,13 +50,48 @@ abstract class BaseBatchWriter extends Command implements ICreatesBatchFiles
 
     public function getCommandBaseName()
     {
-        return "batch-make";
+        return config('batch.command_basename');
     }
 
     public function __construct()
     {
-        $this->signature = $this->getExecutableName() . ' ' . $this->getCustomOptions();
+        $definitionName = config('batch.definitions.' . get_class($this));
+
+        if(!blank($definitionName)) {
+            $class = new $definitionName;
+
+            if(!$class instanceof  IHasDefinitions) {
+                throw new \Exception('Definitions are either not defined or do not implement the ' . IHasDefinitions::class . ' interface!');
+            }
+
+            $options = $class->toCollection()->__toString();
+        } else {
+            $options = "";
+        }
+
+        $this->signature = $this->getExecutableName() . ' ' . $options;
 
         parent::__construct();
+    }
+
+    public function appendContents(): string
+    {
+        $out = [];
+
+        foreach($this->options() as $name => $value) {
+            if(!$value) continue;
+
+            $skip = false;
+
+            foreach(config('batch.exclude_from_appends') as $toExclude) {
+                if($name == config('batch.' . $toExclude)) {
+                    continue 2;
+                }
+            }
+
+            $out[] = "--$name=$value";
+        }
+
+        return implode(' ', $out);
     }
 }

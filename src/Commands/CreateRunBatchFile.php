@@ -1,6 +1,8 @@
 <?php
 
-namespace Sammycorgi\LaravelBatchFileCreator\Commands;
+namespace LaravelBatchFileCreator\Commands;
+
+use LaravelBatchFileCreator\Commands\Options\Collection;
 
 class CreateRunBatchFile extends BaseBatchWriter
 {
@@ -38,10 +40,5 @@ class CreateRunBatchFile extends BaseBatchWriter
     public function getCommandName(): string
     {
         return "run";
-    }
-
-    public function getCustomOptions(): ?string
-    {
-        return null;
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace Sammycorgi\LaravelBatchFileCreator\Contracts;
+namespace LaravelBatchFileCreator\Contracts;
+
+use LaravelBatchFileCreator\Commands\Options\Collection;
 
 interface ICreatesBatchFiles
 {
@@ -10,15 +12,11 @@ interface ICreatesBatchFiles
 
     public function getFileName(): string;
 
-    public function getFolderName(): string;
-
     public function getFolderPath(): string;
 
     public function getExecutableName(): string;
 
     public function getCommandName(): string;
-
-    public function getCustomOptions(): ?string;
 
     public function handle(): void;
 }

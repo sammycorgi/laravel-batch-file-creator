@@ -1,12 +1,36 @@
 <?php
 
 return [
-    'all' => [
-        \Sammycorgi\LaravelBatchFileCreator\Commands\CreatePhpArtisanServeBatchFile::class,
-        \Sammycorgi\LaravelBatchFileCreator\Commands\CreateOpenTerminalToProjectPathBatchFile::class,
-        \Sammycorgi\LaravelBatchFileCreator\Commands\CreateRunBatchFile::class,
-        \Sammycorgi\LaravelBatchFileCreator\Commands\CreateQueueWorkBatchFile::class,
-        \Sammycorgi\LaravelBatchFileCreator\Commands\CreateScheduleRunBatchFile::class,
-        \Sammycorgi\LaravelBatchFileCreator\Commands\CreateNpmRunWatchBatchFile::class,
+    'to_write' => [
+        LaravelBatchFileCreator\Commands\CreatePhpArtisanServeBatchFile::class,
+        LaravelBatchFileCreator\Commands\CreateOpenTerminalToProjectPathBatchFile::class,
+        LaravelBatchFileCreator\Commands\CreateRunBatchFile::class,
+        LaravelBatchFileCreator\Commands\CreateQueueWorkBatchFile::class,
+        LaravelBatchFileCreator\Commands\CreateScheduleRunBatchFile::class,
+        LaravelBatchFileCreator\Commands\CreateNpmRunWatchBatchFile::class,
     ],
+
+    'folder_path' => base_path('batch'),
+
+    'command_basename' => 'batch-make',
+
+    'file_extension' => 'bat',
+
+    'php' => [
+        'exe_path' => "C:" . DIRECTORY_SEPARATOR . "xampp" . DIRECTORY_SEPARATOR . "php" . DIRECTORY_SEPARATOR . "php.exe",
+        'path_argument_name' => 'php-path',
+    ],
+
+    'exclude_from_appends' => [ //use dot notation to access same array
+        'php.path_argument_name',
+    ],
+
+    'definitions' => [
+        LaravelBatchFileCreator\Commands\CreatePhpArtisanServeBatchFile::class => \LaravelBatchFileCreator\Commands\Options\Definitions\ServeDefinitions::class,
+        LaravelBatchFileCreator\Commands\CreateOpenTerminalToProjectPathBatchFile::class => null,
+        LaravelBatchFileCreator\Commands\CreateRunBatchFile::class => null,
+        LaravelBatchFileCreator\Commands\CreateQueueWorkBatchFile::class => \LaravelBatchFileCreator\Commands\Options\Definitions\QueueWorkDefinitions::class,
+        LaravelBatchFileCreator\Commands\CreateScheduleRunBatchFile::class => \LaravelBatchFileCreator\Commands\Options\Definitions\ScheduleRunDefinitions::class,
+        LaravelBatchFileCreator\Commands\CreateNpmRunWatchBatchFile::class => null,
+    ]
 ];

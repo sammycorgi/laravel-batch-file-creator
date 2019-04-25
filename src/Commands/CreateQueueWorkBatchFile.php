@@ -1,9 +1,12 @@
 <?php
 
-namespace Sammycorgi\LaravelBatchFileCreator\Commands;
+namespace LaravelBatchFileCreator\Commands;
 
-class CreateQueueWorkBatchFile extends BasePhpBatchWriter
+use LaravelBatchFileCreator\Commands\Traits\GetsPhpExecutableInformation;
+
+class CreateQueueWorkBatchFile extends BaseBatchWriter
 {
+    use GetsPhpExecutableInformation;
 
     /**
      * The name and signature of the console command.
@@ -21,12 +24,7 @@ class CreateQueueWorkBatchFile extends BasePhpBatchWriter
 
     public function getContents(): string
     {
-        return "cd " . base_path() . PHP_EOL . "{$this->getUserDefinedExecutablePath()} artisan queue:work";
-    }
-
-    public function getCustomOptions() : string
-    {
-        return $this->getPhpExecutableLocationSignatureArgument();
+        return "cd " . base_path() . PHP_EOL . $this->getPhpExecutablePath() . " artisan queue:work {$this->appendContents()}";
     }
 
     public function getCommandName(): string
