@@ -1,0 +1,21 @@
+{
+    "name": "sammycorgi/laravel-batch-file-creator",
+    "description": "Useful artisan commands for the creation of batch files for easier laravel development on windows machines",
+    "require": {
+        "laravel/framework": "^5.8"
+    },
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "sammycorgi",
+            "email": "35593534+sammycorgi@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Sammycorgi\\LaravelBatchFileCreator\\" : "src/"
+        }
+    }
+}
