@@ -34,9 +34,15 @@ This will create a config file at `config/batch.php`
 
 `php.exe_path` - Location of the php executable. Default is `C:\xampp\php\php.exe`
 
+`to_write` - The batch files created by the `batch-make:all` command. Be sure that these are in the correct order!
+
 ## Writing new batch file creators
 
 Create a new class that extends `Sammycorgi\LaravelBatchFileCreator\Commands\BaseBatchWriter`. Make sure to implement the `getContents()` and `getCommandName()` methods!
+
+If the command has any arguments, create an options definition class that extends `Sammycorgi\LaravelBatchFileCreator\Commands\Options\Definitions\Definition` and implement the `getDefinitions()` method. This will return an array of arrays - one array for each option. The `name` of the option is required. You can also define the `default` and the `description` of the option.
+
+Make sure to add an entry to the `definitions` array in the config to map this definition to the command. Syntax is `[creator_class_name] => [definition_class_name (or null if no options)]`
 
 `getContents()` will be the contents of the batch file to be written.
 
