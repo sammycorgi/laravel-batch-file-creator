@@ -4,10 +4,11 @@ return [
     'to_write' => [
         LaravelBatchFileCreator\Commands\CreatePhpArtisanServeBatchFile::class,
         LaravelBatchFileCreator\Commands\CreateOpenTerminalToProjectPathBatchFile::class,
-        LaravelBatchFileCreator\Commands\CreateRunBatchFile::class,
         LaravelBatchFileCreator\Commands\CreateQueueWorkBatchFile::class,
         LaravelBatchFileCreator\Commands\CreateScheduleRunBatchFile::class,
         LaravelBatchFileCreator\Commands\CreateNpmRunWatchBatchFile::class,
+
+        LaravelBatchFileCreator\Commands\CreateRunBatchFile::class, //this needs to go last as it generates a batch file that runs all the other files
     ],
 
     'folder_path' => base_path('batch'),

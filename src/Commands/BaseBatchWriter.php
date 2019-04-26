@@ -81,8 +81,6 @@ abstract class BaseBatchWriter extends Command implements ICreatesBatchFiles
         foreach($this->options() as $name => $value) {
             if(!$value) continue;
 
-            $skip = false;
-
             foreach(config('batch.exclude_from_appends') as $toExclude) {
                 if($name == config('batch.' . $toExclude)) {
                     continue 2;

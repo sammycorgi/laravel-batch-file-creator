@@ -2,8 +2,6 @@
 
 namespace LaravelBatchFileCreator\Commands;
 
-use LaravelBatchFileCreator\Commands\Options\Collection;
-
 class CreateScheduleRunBatchFile extends BaseBatchWriter
 {
     /**
