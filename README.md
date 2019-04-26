@@ -12,7 +12,7 @@ Laravel should auto discover the package. If it doesn't, run `php artisan packag
 
 By default, run `php artisan batch-make:all` to create the default batch files for a new laravel installation. This will create batch files that run the following commands:
 
-Run this command with the --defaults flag to skip the questions, and jump straight into generating the scripts based on the default options defined in the config.
+Run this command with the `--defaults` flag to skip the questions, and jump straight into generating the scripts based on the default options defined in the config.
 
 * `php artisan serve`
 * `php artisan queue:work`
@@ -50,5 +50,5 @@ The base class has an `appendContents()` method, which outputs the options and t
 
 The `handle()` method that is required for every artisan command is defined in the base class. By default, it writes the content to the batch file and outputs a success message. 
 
-If the script needs to access the php executable, use the `Sammycorgi\LaravelBatchFileCreator\Commands\Traits\GetsPhpExecutableInformation` trait and implement the `Sammycorgi\LaravelBatchFileCreator\Commands\Contracts\IUsesPhpExecutable` infterface. Call `$this->getPhpExecutablePath()` to get the defined path of the php executable
+If the script needs to access the php executable, use the `Sammycorgi\LaravelBatchFileCreator\Commands\Traits\GetsPhpExecutableInformation` trait and implement the `Sammycorgi\LaravelBatchFileCreator\Commands\Contracts\IUsesPhpExecutable` interface. Call `$this->getPhpExecutablePath()` to get the defined path of the php executable
 
