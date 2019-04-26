@@ -2,7 +2,7 @@
     "name": "sammycorgi/laravel-batch-file-creator",
     "description": "Useful artisan commands for the creation of batch files for easier laravel development on windows machines",
     "require": {
-        "laravel/framework": "5.7.*"
+        "laravel/framework": ">=5.7.*"
     },
     "type": "library",
     "license": "MIT",
