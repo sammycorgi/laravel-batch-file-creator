@@ -1,3 +1,24 @@
+This repository has been archived as much better tools are available.
+
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+
 # Laravel Batch File Creator
 
 Adds some artisan commands for the generation of batch files so you don't have to open a number of terminals every time you want to start development on a windows machine.
